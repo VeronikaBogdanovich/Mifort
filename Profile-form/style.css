@@ -1,0 +1,93 @@
+:root {
+	--base-indent: 20px;
+	--base-border-radius: 3px;
+	--background-color: darkgray;
+	--font-color: gray;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: rgb(233, 233, 233);
+}
+
+.content {
+	width: 50%;
+	margin: var(--base-indent) auto;
+	padding: var(--base-indent);
+	background-color: white;
+	border-radius: var(--base-border-radius);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+	margin-bottom: var(--base-indent);
+	text-align: center;
+	text-transform: uppercase;
+	color: darkgray;
+}
+
+.form {
+	display: flex;
+	justify-content: space-around;
+}
+
+.user-img {
+	width: 15vw;
+	height: 15vw;
+	border: 3px solid var(--background-color);
+	border-radius: 50%;
+}
+
+.choose {
+	margin-top: var(--base-indent);
+	text-align: center;
+	/*background: var(--background-color);*/
+	/*color: var(--font-color);*/
+	/*line-height: calc(var(--base-indent) * 2);*/
+	border-radius: var(--base-border-radius);
+}
+
+form > .field {
+	display: flex;
+	flex-direction: column;
+}
+
+form > .field > label {
+	width: 70%;;
+	margin-top: var(--base-indent);
+	color: var(--font-color);
+	font-size: 16px;
+	line-height: calc(var(--base-indent) * 1.5);
+	border-radius: var(--base-border-radius);
+}
+
+form > .field > input {
+	width: 100%;
+	margin-top: calc(var(--base-indent) * 0.5);
+	font-size: 16px;
+	border: 0;
+	outline: none;
+	border-bottom: 1px solid var(--background-color);
+}
+
+.submit-holder {
+	text-align: center;
+}
+
+.submit {
+	margin-top: var(--base-indent);
+	text-align: center;
+	background: var(--background-color);
+	color: var(--font-color);
+	font-size: 18px;
+	border: 0;
+	outline: none;
+	border-radius: var(--base-border-radius);
+	padding: calc(var(--base-indent) * 0.5) ;
+	width: 20%;
+}
