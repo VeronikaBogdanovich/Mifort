@@ -9,6 +9,7 @@ espowered/
 
 node_modules/
 typings/
+e2e/
 
 lib/**/*.js
 lib/**/*.js.map
