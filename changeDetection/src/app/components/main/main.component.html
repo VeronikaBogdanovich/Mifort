@@ -1,0 +1,8 @@
+<app-default [valueToAdd]="valueToAdd"></app-default>
+
+<div class="blocks">
+  <app-push [valueToAdd]="valueToAdd" mat-line></app-push>
+  <app-change-detection [valueToAdd]="valueToAdd" mat-line></app-change-detection>
+</div>
+
+<app-add (add)="add($event)" class="button"></app-add>
