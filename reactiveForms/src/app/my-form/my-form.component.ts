@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
+import {Email, User} from '../models/user.interface';
+import {SkillsEnum} from '../models/skills.model';
 
 @Component({
   selector: 'app-my-form',
@@ -19,37 +21,24 @@ import {Subscription} from 'rxjs';
 })
 export class MyFormComponent implements OnInit, OnDestroy {
   userForm: FormGroup;
-  skills: string[];
-  @Output() onChange: EventEmitter<{ name: string, value: any }> = new EventEmitter();
+  skills = Object.keys(SkillsEnum).reduce((arr, key) => {
+    if (!arr.includes(key)) {
+      arr.push(SkillsEnum[key]);
+    }
+    return arr;
+  }, [])
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
+  @Input() user: any;
+  @Input() uType: any;
   private onChangeControlSubList: Array<Subscription> = [];
 
   constructor(private fb: FormBuilder) {
   }
 
-  @Input() set name(value: string) {
-    this.userForm.get('name').setValue(value);
-  }
-
-  @Input('skills') set skillsSet(value: string) {
-    this.userForm.get('skills').setValue(value);
-  }
-
-  @Input() set email(value: string) {
-    this.userForm.get('email').setValue(value);
-  }
-
-  @Input() set age(value: string) {
-    this.userForm.get('age').setValue(value);
-  }
-
-  @Input() set confirm(value: string) {
-    this.userForm.get('confirm').setValue(value);
-  }
-
   ngOnInit() {
-    this.skills = ['1', '2', '3', '4', '5'];
     this.initForm();
-    this.formSubscribe();
+
+    this.userForm.valueChanges.subscribe(value => this.onChange.emit(value));
   }
 
   isControlInvalid(controlName: string): boolean {
@@ -65,6 +54,8 @@ export class MyFormComponent implements OnInit, OnDestroy {
         .forEach(controlName => controls[controlName].markAsTouched());
       return;
     }
+
+    this.onChange.emit(this.userForm.value);
   }
 
   ngOnDestroy(): void {
@@ -73,28 +64,44 @@ export class MyFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private initForm(): void {
-    this.userForm = this.fb.group({
-      skills: [null, [Validators.required, Validators.pattern(/[1-5]/)]],
-      name: ['', [Validators.required, Validators.pattern(/[А-я]/), Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      age: ['', [Validators.required, Validators.pattern(/[0-150]/)]],
-      confirm: [false, [Validators.required]]
-    });
+  getTypes() {
+    return Object.keys(this.userForm.controls).map(key => {
+        let type = 'string';
+
+        if (key === 'email') {
+          type = 'email';
+        }
+
+        if (key === 'skill') {
+          type = 'skill';
+        }
+
+        if (key === 'confirm') {
+          type = 'confirm';
+        }
+
+        if (key === 'age') {
+          type = 'number';
+        }
+
+        return {name: key, type: type};
+      }
+    );
   }
 
-  private formSubscribe() {
-    for (const item in this.userForm.controls) {
-      const control: AbstractControl = this.userForm.get(item);
+  private initForm(): void {
+    if (this.uType) {
+      this.userForm = this.fb.group({});
 
-      const sub = control.valueChanges.subscribe(value => {
-        this.onChange.emit({
-          name: item,
-          value: value
-        });
+      Object.keys(this.uType).forEach(key => {
+        if (key === 'email') {
+          this.userForm.addControl(key, new FormControl(
+            this.user && this.user[key] && (this.user[key] as Email).local + '@' + (this.user[key] as Email).domain, [Validators.required]));
+          return;
+        }
+
+        this.userForm.addControl(key, new FormControl(this.user && this.user[key], [Validators.required]));
       });
-
-      this.onChangeControlSubList.push(sub);
     }
   }
 }

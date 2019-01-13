@@ -1,42 +1,85 @@
 <form [formGroup]="userForm"
       class="component"
       (submit)="onSubmit()">
-  <div class="form-group">
-    <label for="name">Имя пользователя:</label>
-    <input type="text" id="name" formControlName="name"/>
-    <div class="error" *ngIf="isControlInvalid('name')">
-      Имя должно состоять только из русских букв
+  <div class="form-group" *ngFor="let control of getTypes()">
+    <div *ngIf="control.type === 'string'">
+      <input type="text" [id]="control" [formControlName]="control.name"/>
+
+      <div class="error" *ngIf="isControlInvalid(control.name)">
+        Invalid
+      </div>
+    </div>
+
+    <div *ngIf="control.type === 'email'">
+      <input type="text" [id]="control" [formControlName]="control.name"/>
+
+      <div class="error" *ngIf="isControlInvalid(control.name)">
+        Not valid
+      </div>
+    </div>
+
+    <div *ngIf="control.type === 'number'">
+      <input type="number" [id]="control" [formControlName]="control.name"/>
+
+      <div class="error" *ngIf="isControlInvalid(control.name)">
+        Not valid
+      </div>
+    </div>
+
+    <div *ngIf="control.type === 'skill'">
+      <select id="skills" [formControlName]="control.name">
+        <option disabled value="null">choose</option>
+        <option *ngFor="let skill of skills">{{skill}}</option>
+      </select>
+
+      <div class="error" *ngIf="isControlInvalid(control.name)">
+        Vabsche dich
+      </div>
+    </div>
+
+    <div *ngIf="control.type === 'confirm'">
+      <input id="confirm" type="checkbox" [formControlName]="control.name"/>
+
+      <div class="error" *ngIf="isControlInvalid(control.name)">
+        Vabsche dich
+      </div>
     </div>
   </div>
 
-  <div class="form-group">
-    <label for="email">Email:</label>
-    <input type="Email" id="email" formControlName="email"/>
-    <div class="error" *ngIf="isControlInvalid('email')">
-      Данного email адреса не существует
-    </div>
-  </div>
+  <!--<div class="form-group">-->
+  <!--<label for="name">Имя пользователя:</label>-->
+  <!--<input type="text" id="name" formControlName="name"/>-->
 
-  <div class="form-group">
-    <label for="age">Возраст:</label>
-    <input type="Date" id="age" formControlName="age"/>
-    <div class="error" *ngIf="isControlInvalid('age')">
-      Возраст должен быть от 0 до 150 лет
-    </div>
-  </div>
+  <!--</div>-->
 
-  <div class="form-group">
-    <label for="skills">Skills:</label>
-    <select id="skills" formControlName="skills" type="Enum">
-      <option disabled value="null">choose</option>
-      <option *ngFor="let skill of skills">{{skill}}</option>
-    </select>
-  </div>
+  <!--<div class="form-group">-->
+  <!--<label for="email">Email:</label>-->
+  <!--<input type="Email" id="email" formControlName="email"/>-->
+  <!--<div class="error" *ngIf="isControlInvalid('email')">-->
+  <!--Данного email адреса не существует-->
+  <!--</div>-->
+  <!--</div>-->
 
-  <div class="form-group">
-    <label for="confirm">Согласен(на):</label>
-    <input id="confirm" type="checkbox" formControlName="confirm"/>
-  </div>
+  <!--<div class="form-group">-->
+  <!--<label for="age">Возраст:</label>-->
+  <!--<input type="Date" id="age" formControlName="age"/>-->
+  <!--<div class="error" *ngIf="isControlInvalid('age')">-->
+  <!--Возраст должен быть от 0 до 150 лет-->
+  <!--</div>-->
+  <!--</div>-->
+
+  <!--<div class="form-group">-->
+  <!--<label for="skills">Skills:</label>-->
+  <!--<select id="skills" formControlName="skills" type="Enum">-->
+  <!--<option disabled value="null">choose</option>-->
+  <!--<option *ngFor="let skill of skills">{{skill}}</option>-->
+  <!--</select>-->
+  <!--</div>-->
+
+  <!--<div class="form-group">-->
+  <!--<label for="confirm">Согласен(на):</label>-->
+  <!--<input id="confirm" type="checkbox" formControlName="confirm"/>-->
+  <!--</div>-->
 
   <button type="submit">отправить</button>
 </form>

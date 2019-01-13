@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {User} from './models/user.interface';
+import {SkillsEnum} from './models/skills.model';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,20 @@ import { Component } from '@angular/core';
   styles: []
 })
 export class AppComponent {
-  title = 'reactiveForms';
+  user: any;
+  uType: User = new User();
+
+  constructor() {
+    this.user = {
+      name: 'aaa',
+      email: {local: 'aaa', domain: 'mail.ru'},
+      confirm: false,
+      age: 12,
+      skill: SkillsEnum.ANGULAR
+    };
+  }
+
+  onFormChange(user: any) {
+    console.log('user is changed ->', user);
+  }
 }
